@@ -1,9 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { FormEvent } from "react";
 import { motion } from "framer-motion";
-import { FiCloud, FiBarChart2, FiHeadphones, FiShield, FiTrendingDown, FiStar, FiCheck, FiClock, FiAward, FiGlobe, FiCpu, FiMessageSquare, FiPhone, FiMail, FiMapPin, FiFacebook, FiLinkedin, FiTwitter, } from 'react-icons/fi';
+import {
+  FiCloud, FiBarChart2, FiHeadphones, FiShield, FiTrendingDown, FiStar, FiCheck, FiClock, FiAward, FiGlobe, FiCpu, FiMessageSquare, FiPhone, FiMail, FiMapPin, FiFacebook, FiLinkedin, FiTwitter,
+} from 'react-icons/fi';
 
 // --- Centralized Data Config ---
-const ICONS = {
+// Use React.ReactElement for JSX types
+const ICONS: Record<string, React.ReactElement> = {
   FiShield: <FiShield className="text-indigo-600 w-5 h-5" />,
   FiCloud: <FiCloud className="text-indigo-600 w-5 h-5" />,
   FiAward: <FiAward className="text-indigo-600 w-5 h-5" />,
@@ -12,6 +16,31 @@ const ICONS = {
   FiCpu: <FiCpu className="text-indigo-600 w-5 h-5" />,
   FiMessageSquare: <FiMessageSquare className="text-indigo-600 w-5 h-5" />,
   FiClock: <FiClock className="text-indigo-600 w-5 h-5" />,
+};
+
+type Section = { id: string; label: string };
+type HeroStat = { title: string; subtitle: string };
+type Service = { title: string; description: string; features: string[]; icon: React.ReactElement };
+type WhyPoint = { title: string; desc: string; icon: () => React.ReactElement };
+type AboutStat = { value: string; label: string };
+type Certification = { name: string; icon: keyof typeof ICONS };
+type IndiaAdvantage = { title: string; desc: string; icon: keyof typeof ICONS };
+type CaseStudy = {
+  title: string;
+  sector: string;
+  description: string;
+  delivery: string;
+  costReduction?: string;
+  uptime?: string;
+  efficiencyGain?: string;
+  img: string;
+};
+type Testimonial = {
+  name: string;
+  title: string;
+  quote: string;
+  rating: number;
+  avatar: string;
 };
 
 const DATA = {
@@ -23,9 +52,9 @@ const DATA = {
     { id: "cases", label: "Case Studies" },
     { id: "testimonials", label: "Testimonials" },
     { id: "contact", label: "Contact" },
-  ],
+  ] as Section[],
   hero: {
-    img: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1600&q=80", // Business team
+    img: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1600&q=80",
     title: (
       <>
         Premium <span className="text-amber-300">Technology</span> Integration Solutions for Global Businesses
@@ -37,7 +66,7 @@ const DATA = {
       { title: "24/7 Expert Support", subtitle: "Always-on technical assistance" },
       { title: "500+ Projects Delivered", subtitle: "Proven track record" },
       { title: "Global Coverage", subtitle: "Multi-region & timezone support" },
-    ],
+    ] as HeroStat[],
   },
   services: [
     {
@@ -64,13 +93,13 @@ const DATA = {
       features: ["Infrastructure Management", "Security Management", "Backup & Recovery"],
       icon: <FiShield />,
     },
-  ],
+  ] as Service[],
   why: [
     { title: "40-60% Cost Reduction", desc: "Get the same quality of work at a fraction of the cost compared to local providers.", icon: () => <FiTrendingDown width={20} height={20} stroke="#4f46e5" /> },
     { title: "Top-Tier Technical Talent", desc: "Our team consists of certified professionals from top Indian technical institutes.", icon: () => <FiStar width={20} height={20} stroke="#4f46e5" /> },
     { title: "Time Zone Advantage", desc: "Round-the-clock development and support with our strategic global time zone coverage.", icon: () => <FiClock width={20} height={20} stroke="#4f46e5" /> },
     { title: "Proven Track Record", desc: "500+ successful projects delivered for clients across 25+ countries.", icon: () => <FiAward width={20} height={20} stroke="#4f46e5" /> },
-  ],
+  ] as WhyPoint[],
   about: {
     img: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=1600&q=80",
     title: "About TechFlow Systems",
@@ -79,87 +108,78 @@ const DATA = {
       { value: "500+", label: "Projects Completed" },
       { value: "25+", label: "Countries Served" },
       { value: "98%", label: "Client Satisfaction" },
-    ],
+    ] as AboutStat[],
     mission: "To bridge the gap between high-quality technology solutions and cost-effectiveness by leveraging India's exceptional technical talent pool and innovative approach to system integration.",
     certifications: [
       { name: "ISO 27001 Certified", icon: "FiShield" },
       { name: "AWS Partner", icon: "FiCloud" },
       { name: "Microsoft Gold Partner", icon: "FiAward" },
       { name: "Google Cloud Partner", icon: "FiGlobe" },
-    ],
+    ] as Certification[],
     indiaAdvantage: [
       { title: "Cost Efficiency", desc: "Deliver premium quality at 40-60% lower costs than global competitors", icon: "FiTrendingDown" },
       { title: "Technical Excellence", desc: "Access to the world's largest pool of IT professionals", icon: "FiCpu" },
       { title: "English Proficiency", desc: "Seamless communication with global clients", icon: "FiMessageSquare" },
       { title: "Time Zone Coverage", desc: "24/7 support and development capabilities", icon: "FiClock" },
-    ],
+    ] as IndiaAdvantage[],
   },
   cases: [
     {
       title: "Retail Chain Cloud Migration",
       sector: "E-COMMERCE",
-      description:
-        "Migrated 500+ stores to AWS, reducing infrastructure costs by 45% while improving performance.",
+      description: "Migrated 500+ stores to AWS, reducing infrastructure costs by 45% while improving performance.",
       delivery: "6 months",
       costReduction: "45%",
-      img:
-        "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=400",
+      img: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=400",
     },
     {
       title: "Banking ERP Implementation",
       sector: "FINANCIAL SERVICES",
-      description:
-        "Implemented core banking system for regional bank, processing 100K+ daily transactions.",
+      description: "Implemented core banking system for regional bank, processing 100K+ daily transactions.",
       delivery: "18 months",
       uptime: "99.9%",
-      img:
-        "https://images.unsplash.com/photo-1579621970795-87facc2f976d",
+      img: "https://images.unsplash.com/photo-1579621970795-87facc2f976d",
     },
     {
       title: "Hospital Management System",
       sector: "HEALTHCARE",
-      description:
-        "Deployed comprehensive HIS across 50 hospitals, improving patient care efficiency by 60%.",
+      description: "Deployed comprehensive HIS across 50 hospitals, improving patient care efficiency by 60%.",
       delivery: "12 months",
       efficiencyGain: "60%",
-      img:
-        "https://rmsresults.com/wp-content/uploads/2017/07/blog-hospital-case-study-3.jpg",
+      img: "https://rmsresults.com/wp-content/uploads/2017/07/blog-hospital-case-study-3.jpg",
     },
-  ],
+  ] as CaseStudy[],
   testimonials: [
     {
       name: "Michael Chen",
       title: "CTO, RetailTech Solutions",
-      quote:
-        "TechFlow delivered our cloud migration project 2 weeks ahead of schedule and 30% under budget. Their team's expertise in AWS is outstanding.",
+      quote: "TechFlow delivered our cloud migration project 2 weeks ahead of schedule and 30% under budget. Their team's expertise in AWS is outstanding.",
       rating: 5,
       avatar: "https://randomuser.me/api/portraits/men/32.jpg",
     },
     {
       name: "Sarah Johnson",
       title: "CFO, FinanceFirst Corp",
-      quote:
-        "The cost savings have been incredible - 50% reduction in our IT operational costs while improving system performance. Highly recommended!",
+      quote: "The cost savings have been incredible - 50% reduction in our IT operational costs while improving system performance. Highly recommended!",
       rating: 5,
       avatar: "https://randomuser.me/api/portraits/women/44.jpg",
     },
     {
       name: "David Rodriguez",
       title: "VP Engineering, HealthTech Innovations",
-      quote:
-        "Exceptional communication and technical skills. The team understood our requirements perfectly and delivered exactly what we needed.",
+      quote: "Exceptional communication and technical skills. The team understood our requirements perfectly and delivered exactly what we needed.",
       rating: 5,
       avatar: "https://randomuser.me/api/portraits/men/65.jpg",
     },
-  ]
+  ] as Testimonial[],
 };
 
 // --- Main App ---
 export default function App() {
-  const [active, setActive] = useState("home");
+  const [active, setActive] = useState<string>("home");
 
   useEffect(() => {
-    const obs = new IntersectionObserver(
+    const obs = new window.IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) setActive(entry.target.id);
@@ -190,7 +210,7 @@ export default function App() {
 }
 
 // --- Navbar ---
-function Navbar({ sections, active }) {
+function Navbar({ sections, active }: { sections: Section[]; active: string }) {
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
       <nav className="backdrop-blur-sm bg-white/70 border-b border-slate-200">
@@ -214,7 +234,7 @@ function Navbar({ sections, active }) {
   );
 }
 
-function MobileMenu({ sections }) {
+function MobileMenu({ sections }: { sections: Section[] }) {
   const [open, setOpen] = useState(false);
   return (
     <div className="md:hidden">
@@ -236,7 +256,7 @@ function MobileMenu({ sections }) {
 }
 
 // --- Hero ---
-function Hero({ img, title, subtitle, stats }) {
+function Hero({ img, title, subtitle, stats }: { img: string; title: React.ReactElement; subtitle: string; stats: HeroStat[] }) {
   return (
     <div className="relative min-h-[90vh] flex items-center overflow-hidden">
       {/* Background */}
@@ -305,7 +325,7 @@ function Hero({ img, title, subtitle, stats }) {
 }
 
 // --- Services ---
-function Services({ services }) {
+function Services({ services }: { services: Service[] }) {
   return (
     <div>
       <motion.div
@@ -362,7 +382,7 @@ function Tick() {
 }
 
 // --- Why Choose ---
-function WhyChoose({ points }) {
+function WhyChoose({ points }: { points: WhyPoint[] }) {
   return (
     <div>
       <motion.div
@@ -406,7 +426,23 @@ function WhyChoose({ points }) {
 }
 
 // --- About ---
-function About({ img, title, intro, stats, mission, certifications, indiaAdvantage }) {
+function About({
+  img,
+  title,
+  intro,
+  stats,
+  mission,
+  certifications,
+  indiaAdvantage,
+}: {
+  img: string;
+  title: string;
+  intro: string;
+  stats: AboutStat[];
+  mission: string;
+  certifications: Certification[];
+  indiaAdvantage: IndiaAdvantage[];
+}) {
   return (
     <div className="rounded-lg bg-white shadow-sm border overflow-hidden">
       <motion.div
@@ -446,47 +482,49 @@ function About({ img, title, intro, stats, mission, certifications, indiaAdvanta
             ))}
 
             {/* Mission */}
-            <div className="mt-10">
-              <h4 className="text-xl font-semibold mb-3">Our Mission</h4>
-              <p className="text-slate-600 leading-relaxed">{mission}</p>
-            </div>
+            <div className="flex flex-col sm:col-span-3">
+              <div className="mt-10">
+                <h4 className="text-xl font-semibold mb-3">Our Mission</h4>
+                <p className="text-slate-600 leading-relaxed">{mission}</p>
+              </div>
 
-            {/* Certifications */}
-            <div className="mt-10">
-              <h4 className="text-xl font-semibold mb-3">
-                Certifications & Standards
-              </h4>
-              <ul className="grid sm:grid-cols-2 gap-4 text-slate-700">
-                {certifications.map((cert, index) => (
-                  <li
-                    key={`${cert.name}-${index}`}
-                    className="flex items-center gap-3 p-3 border rounded-md bg-slate-50 shadow-sm"
-                  >
-                    {ICONS[cert.icon]}
-                    <span>{cert.name}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+              {/* Certifications */}
+              <div className="mt-10">
+                <h4 className="text-xl font-semibold mb-3">
+                  Certifications & Standards
+                </h4>
+                <ul className="grid sm:grid-cols-2 gap-4 text-slate-700">
+                  {certifications.map((cert, index) => (
+                    <li
+                      key={`${cert.name}-${index}`}
+                      className="flex items-center gap-3 p-3 border rounded-md bg-slate-50 shadow-sm"
+                    >
+                      {ICONS[cert.icon]}
+                      <span>{cert.name}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-            {/* India Advantage */}
-            <div className="mt-10">
-              <h4 className="text-xl font-semibold mb-3">India Advantage</h4>
-              <div className="grid sm:grid-cols-2 gap-4">
-                {indiaAdvantage.map((item, index) => (
-                  <div
-                    key={`${item.title}-${index}`}
-                    className="flex items-start gap-3 p-4 border rounded-md bg-white shadow-sm"
-                  >
-                    <div className="mt-1">{ICONS[item.icon]}</div>
-                    <div>
-                      <h5 className="font-semibold text-indigo-700">
-                        {item.title}
-                      </h5>
-                      <p className="text-slate-600 mt-1 text-sm">{item.desc}</p>
+              {/* India Advantage */}
+              <div className="mt-10">
+                <h4 className="text-xl font-semibold mb-3">India Advantage</h4>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  {indiaAdvantage.map((item, index) => (
+                    <div
+                      key={`${item.title}-${index}`}
+                      className="flex items-start gap-3 p-4 border rounded-md bg-white shadow-sm"
+                    >
+                      <div className="mt-1">{ICONS[item.icon]}</div>
+                      <div>
+                        <h5 className="font-semibold text-indigo-700">
+                          {item.title}
+                        </h5>
+                        <p className="text-slate-600 mt-1 text-sm">{item.desc}</p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -498,7 +536,7 @@ function About({ img, title, intro, stats, mission, certifications, indiaAdvanta
 
 
 // --- Case Studies ---
-function CaseStudies({ cases }) {
+function CaseStudies({ cases }: { cases: CaseStudy[] }) {
   return (
     <div>
       <motion.div
@@ -561,7 +599,7 @@ function CaseStudies({ cases }) {
 }
 
 // --- Testimonials ---
-function Testimonials({ items }) {
+function Testimonials({ items }: { items: Testimonial[] }) {
   return (
     <div>
       <motion.div
@@ -614,12 +652,13 @@ function Testimonials({ items }) {
   );
 }
 
-// --- Contact & Footer (unchanged) ---
+// --- Contact & Footer ---
 function Contact() {
-  const formRef = useRef(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
-  function handleSubmit(e) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (!formRef.current) return;
     const fd = new FormData(formRef.current);
     console.log(Object.fromEntries(fd.entries()));
     alert("Thanks! We'll reach out to schedule your consultation.");
@@ -632,7 +671,7 @@ function Contact() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
-      className="py-16 bg-gradient-to-b from-white to-indigo-50"
+      className="py-16"
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Section Heading */}
@@ -745,7 +784,7 @@ function Contact() {
 
 function Footer() {
   return (
-    <footer className="mt-16 border-t bg-slate-50 border-slate-200">
+    <footer className="border-t bg-slate-50 border-slate-200">
       <div className="max-w-6xl mx-auto px-6 py-12 grid md:grid-cols-4 gap-10">
         {/* Brand Section */}
         <div>
