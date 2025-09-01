@@ -2,8 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import { motion } from "framer-motion";
 import {
-  FiCloud, FiBarChart2, FiHeadphones, FiShield, FiTrendingDown, FiStar, FiCheck, FiClock, FiAward, FiGlobe, FiCpu, FiMessageSquare, FiPhone, FiMail, FiMapPin, FiFacebook, FiLinkedin, FiTwitter,
+  FiCloud, FiBarChart2, FiShield, FiTrendingDown, FiStar, FiCheck, FiClock, FiAward, FiGlobe, FiCpu, FiMessageSquare, FiPhone, FiMail, FiMapPin, FiFacebook, FiLinkedin, FiTwitter,
 } from 'react-icons/fi';
+import heroImage from './assets/computer.jpg'
+import './App.css';
 
 // --- Centralized Data Config ---
 // Use React.ReactElement for JSX types
@@ -20,7 +22,7 @@ const ICONS: Record<string, React.ReactElement> = {
 
 type Section = { id: string; label: string };
 type HeroStat = { title: string; subtitle: string };
-type Service = { title: string; description: string; features: string[]; icon: React.ReactElement };
+type Service = { title: string; description: string; features: string[]; img: string; icon: React.ReactElement };
 type WhyPoint = { title: string; desc: string; icon: () => React.ReactElement };
 type AboutStat = { value: string; label: string };
 type Certification = { name: string; icon: keyof typeof ICONS };
@@ -54,7 +56,7 @@ const DATA = {
     { id: "contact", label: "Contact" },
   ] as Section[],
   hero: {
-    img: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1600&q=80",
+    img: heroImage,
     title: (
       <>
         Premium <span className="text-amber-300">Technology</span> Integration Solutions for Global Businesses
@@ -73,25 +75,29 @@ const DATA = {
       title: "Cloud Services",
       description: "AWS, Azure, GCP migration and optimization. Reduce infrastructure costs by up to 50%.",
       features: ["Cloud Migration", "Infrastructure Optimization", "Multi-Cloud Strategy"],
+      img: "https://s3-ap-south-1.amazonaws.com/ricedigitals3bucket/AUPortalContent/2021/08/12060931/Untitled-design-88.png", // cloud image
       icon: <FiCloud />,
     },
     {
       title: "Enterprise Applications",
       description: "Custom enterprise solutions, ERP implementations, and system integrations.",
       features: ["ERP Implementation", "Custom Development", "API Integrations"],
+      img: "https://oecko.com/wp-content/uploads/2021/01/Image-article-1080x675.jpg", // enterprise image
       icon: <FiBarChart2 />,
     },
     {
-      title: "Support Contracts",
-      description: "24/7 technical support with guaranteed SLAs. Proactive monitoring and maintenance.",
-      features: ["24/7 Monitoring", "Incident Management", "Performance Optimization"],
-      icon: <FiHeadphones />,
+      title: "Application Development and Testing",
+      description: "End-to-end application development, rigorous testing, and continuous improvement to deliver robust solutions.",
+      features: ["Custom Application Development", "Automated & Manual Testing", "Continuous Integration/Delivery"],
+      img: "https://static.vecteezy.com/system/resources/thumbnails/037/471/685/small_2x/close-up-female-hands-of-unrecognizable-business-woman-professional-user-worker-using-typing-on-laptop-cropped-view-unknown-girl-working-with-computer-keyboard-sit-at-home-office-working-online-chat-photo.jpg", // dev/testing
+      icon: <FiCpu />,
     },
     {
-      title: "Managed Services",
-      description: "Complete IT infrastructure management. Focus on your business while we handle the tech.",
-      features: ["Infrastructure Management", "Security Management", "Backup & Recovery"],
-      icon: <FiShield />,
+      title: "Gen AI / AI Services",
+      description: "Cutting-edge AI solutions leveraging Generative AI, ML models, and automation to drive innovation.",
+      features: ["AI/ML Model Development", "Generative AI Solutions", "AI Consulting & Strategy"],
+      img: "https://pub-e93d5c9fdf134c89830082377f6df465.r2.dev/2024/11/Generative-AI-edited.webp", // AI image
+      icon: <FiGlobe />,
     },
   ] as Service[],
   why: [
@@ -197,10 +203,10 @@ export default function App() {
       <Navbar sections={DATA.sections} active={active} />
       <main className="mt-16">
         <section id="home"><Hero {...DATA.hero} /></section>
-        <section id="services" className="py-20 px-6"><div className="container mx-auto max-w-6xl"><Services services={DATA.services} /></div></section>
-        <section id="why" className="py-20 bg-slate-50 px-6"><div className="container mx-auto max-w-6xl"><WhyChoose points={DATA.why} /></div></section>
-        <section id="about" className="py-20 px-6"><div className="container mx-auto max-w-4xl"><About {...DATA.about} /></div></section>
-        <section id="cases" className="py-20 px-6 bg-white"><div className="container mx-auto max-w-6xl"><CaseStudies cases={DATA.cases} /></div></section>
+        <section id="services" className="py-20 px-6"><div className="container mx-auto"><Services services={DATA.services} /></div></section>
+        <section id="why" className="py-20 bg-slate-50 px-6"><div className="container mx-auto"><WhyChoose points={DATA.why} /></div></section>
+        <section id="about" className="py-20 px-6"><div className="container mx-auto !max-w-[1100px]"><About {...DATA.about} /></div></section>
+        <section id="cases" className="py-20 px-6 bg-white"><div className="container mx-auto"><CaseStudies cases={DATA.cases} /></div></section>
         <section id="testimonials" className="py-20 px-6 bg-slate-50"><div className="container mx-auto max-w-5xl"><Testimonials items={DATA.testimonials} /></div></section>
         <section id="contact" className="py-20 px-6"><div className="container mx-auto max-w-3xl"><Contact /></div></section>
       </main>
@@ -214,7 +220,7 @@ function Navbar({ sections, active }: { sections: Section[]; active: string }) {
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
       <nav className="backdrop-blur-sm bg-white/70 border-b border-slate-200">
-        <div className="container mx-auto max-w-6xl px-4">
+        <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <a href="#home" className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-md flex items-center justify-center bg-gradient-to-tr from-indigo-500 to-purple-500 text-white font-bold">T</div>
@@ -314,12 +320,6 @@ function Hero({ img, title, subtitle, stats }: { img: string; title: React.React
           </div>
         </div>
       </div>
-
-      {/* Floating Badge (Hidden on Mobile) */}
-      <div className="hidden sm:flex absolute bottom-6 right-6 sm:bottom-10 sm:right-10 bg-indigo-600 text-white w-20 h-20 sm:w-28 sm:h-28 rounded-full flex-col items-center justify-center shadow-lg border-4 border-white/30">
-        <div className="text-lg sm:text-2xl font-bold">40-60%</div>
-        <div className="text-[10px] sm:text-xs opacity-90 mt-1">Cost Savings</div>
-      </div>
     </div>
   );
 }
@@ -333,7 +333,7 @@ function Services({ services }: { services: Service[] }) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="container mx-auto max-w-7xl"
+        className="container mx-auto"
       >
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold tracking-tight">Our Core Services</h2>
@@ -343,33 +343,44 @@ function Services({ services }: { services: Service[] }) {
           </p>
         </div>
 
-        {/* Flex wrap container for perfect centering */}
-        <div className="flex flex-wrap justify-center gap-4">
+        {/* Responsive Flex Container */}
+        <div className="flex flex-wrap justify-center gap-6">
           {services.map((s) => (
-            <div
+            <motion.div
               key={s.title}
-              className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33%-1rem)] max-w-sm rounded-xl border border-slate-200 p-6 shadow-md bg-white hover:shadow-xl hover:scale-105 transition"
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 200 }}
+              className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33%-1rem)] max-w-sm rounded-xl border border-slate-200 shadow-md bg-white overflow-hidden"
             >
-              <div className="flex items-center gap-4">
-                <div className="w-[7.5rem] h-14 rounded-lg bg-indigo-100 flex items-center justify-center text-indigo-600 text-2xl">
+              {/* Service Image */}
+              <img
+                src={s.img}
+                alt={s.title}
+                className="w-full h-[15rem] object-cover"
+              />
+
+              {/* Card Content */}
+              <div className="p-6">
+                {/* Icon */}
+                <div className="w-12 h-12 rounded-lg bg-indigo-100 flex items-center justify-center text-indigo-600 text-2xl mb-3">
                   {s.icon}
                 </div>
-                <div>
-                  <h3 className="text-xl font-semibold">{s.title}</h3>
-                  <p className="mt-1 text-sm text-slate-600 leading-relaxed">
-                    {s.description}
-                  </p>
-                </div>
+
+                <h3 className="text-xl font-semibold">{s.title}</h3>
+                <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+                  {s.description}
+                </p>
+
+                <ul className="mt-4 space-y-2">
+                  {s.features.map((f) => (
+                    <li key={f} className="flex items-start gap-3">
+                      <Tick />
+                      <span className="text-sm text-slate-700">{f}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <ul className="mt-4 space-y-2">
-                {s.features.map((f) => (
-                  <li key={f} className="flex items-start gap-3">
-                    <Tick />
-                    <span className="text-sm text-slate-700">{f}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            </motion.div>
           ))}
         </div>
       </motion.div>
@@ -390,7 +401,7 @@ function WhyChoose({ points }: { points: WhyPoint[] }) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="container mx-auto max-w-7xl"
+        className="container mx-auto"
       >
         <div className="text-center mb-10">
           <h2 className="text-3xl font-bold">Why Choose Indian Expertise?</h2>
@@ -450,7 +461,7 @@ function About({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="container mx-auto max-w-7xl"
+        className="container mx-auto"
       >
         {/* Background Header Section */}
         <div className="relative h-[22rem] flex items-center justify-center text-center text-white">
@@ -544,7 +555,7 @@ function CaseStudies({ cases }: { cases: CaseStudy[] }) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="container mx-auto max-w-7xl"
+        className="container mx-auto"
       >
         <div className="text-center mb-10">
           <h2 className="text-3xl font-bold">Portfolio & Case Studies</h2>
@@ -607,7 +618,7 @@ function Testimonials({ items }: { items: Testimonial[] }) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="container mx-auto max-w-7xl"
+        className="container mx-auto"
       >
         <div className="text-center mb-10">
           <h2 className="text-3xl font-bold">Client Testimonials</h2>
@@ -785,7 +796,7 @@ function Contact() {
 function Footer() {
   return (
     <footer className="border-t bg-slate-50 border-slate-200">
-      <div className="max-w-6xl mx-auto px-6 py-12 grid md:grid-cols-4 gap-10">
+      <div className="max-w-[1300px] mx-auto px-6 py-12 grid md:grid-cols-4 gap-10">
         {/* Brand Section */}
         <div>
           <div className="flex items-center gap-3">
