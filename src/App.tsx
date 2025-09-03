@@ -24,17 +24,12 @@ type Section = { id: string; label: string };
 type HeroStat = { title: string; subtitle: string };
 type Service = { title: string; description: string; features: string[]; img: string; icon: React.ReactElement };
 type WhyPoint = { title: string; desc: string; icon: () => React.ReactElement };
-type AboutStat = { value: string; label: string };
 type Certification = { name: string; icon: keyof typeof ICONS };
 type IndiaAdvantage = { title: string; desc: string; icon: keyof typeof ICONS };
 type CaseStudy = {
   title: string;
   sector: string;
   description: string;
-  delivery: string;
-  costReduction?: string;
-  uptime?: string;
-  efficiencyGain?: string;
   img: string;
 };
 type Testimonial = {
@@ -64,9 +59,9 @@ const DATA = {
     ),
     subtitle: "Cost-effective cloud solutions, enterprise applications and managed services that accelerate business growth.",
     stats: [
-      { title: "Up to 40% Cost Savings", subtitle: "Optimized solutions for your business" },
+      { title: "Significant Cost Savings", subtitle: "Optimized solutions for your business" },
       { title: "24/7 Expert Support", subtitle: "Always-on technical assistance" },
-      { title: "500+ Projects Delivered", subtitle: "Proven track record" },
+      { title: "Helped customers", subtitle: "Clients across manufacturing, retail, finance etc." },
       { title: "Global Coverage", subtitle: "Multi-region & timezone support" },
     ] as HeroStat[],
   },
@@ -101,20 +96,15 @@ const DATA = {
     },
   ] as Service[],
   why: [
-    { title: "40-60% Cost Reduction", desc: "Get the same quality of work at a fraction of the cost compared to local providers.", icon: () => <FiTrendingDown width={20} height={20} stroke="#4f46e5" /> },
+    { title: "Cost Reduction", desc: "Get the same quality of work at a fraction of the cost compared to local providers.", icon: () => <FiTrendingDown width={20} height={20} stroke="#4f46e5" /> },
     { title: "Top-Tier Technical Talent", desc: "Our team consists of certified professionals from top Indian technical institutes.", icon: () => <FiStar width={20} height={20} stroke="#4f46e5" /> },
     { title: "Time Zone Advantage", desc: "Round-the-clock development and support with our strategic global time zone coverage.", icon: () => <FiClock width={20} height={20} stroke="#4f46e5" /> },
-    { title: "Proven Track Record", desc: "500+ successful projects delivered for clients across 25+ countries.", icon: () => <FiAward width={20} height={20} stroke="#4f46e5" /> },
+    { title: "Proven Track Record", desc: "Helped clients across manufacturing, retail, finance etc.", icon: () => <FiAward width={20} height={20} stroke="#4f46e5" /> },
   ] as WhyPoint[],
   about: {
     img: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=1600&q=80",
     title: "About TechFlow Systems",
-    intro: "A leading Indian system integrator with 8+ years of experience delivering world-class technology solutions to global clients.",
-    stats: [
-      { value: "500+", label: "Projects Completed" },
-      { value: "25+", label: "Countries Served" },
-      { value: "98%", label: "Client Satisfaction" },
-    ] as AboutStat[],
+    intro: "TechFlow is a Wetechies LLC company which has been helping US base companies since 2013.",
     mission: "To bridge the gap between high-quality technology solutions and cost-effectiveness by leveraging India's exceptional technical talent pool and innovative approach to system integration.",
     certifications: [
       { name: "ISO 27001 Certified", icon: "FiShield" },
@@ -123,7 +113,7 @@ const DATA = {
       { name: "Google Cloud Partner", icon: "FiGlobe" },
     ] as Certification[],
     indiaAdvantage: [
-      { title: "Cost Efficiency", desc: "Deliver premium quality at 40-60% lower costs than global competitors", icon: "FiTrendingDown" },
+      { title: "Cost Efficiency", desc: "Deliver premium quality at significantly costs than global competitors", icon: "FiTrendingDown" },
       { title: "Technical Excellence", desc: "Access to the world's largest pool of IT professionals", icon: "FiCpu" },
       { title: "English Proficiency", desc: "Seamless communication with global clients", icon: "FiMessageSquare" },
       { title: "Time Zone Coverage", desc: "24/7 support and development capabilities", icon: "FiClock" },
@@ -134,24 +124,18 @@ const DATA = {
       title: "Retail Chain Cloud Migration",
       sector: "E-COMMERCE",
       description: "Migrated 500+ stores to AWS, reducing infrastructure costs by 45% while improving performance.",
-      delivery: "6 months",
-      costReduction: "45%",
       img: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=400",
     },
     {
       title: "Banking ERP Implementation",
       sector: "FINANCIAL SERVICES",
       description: "Implemented core banking system for regional bank, processing 100K+ daily transactions.",
-      delivery: "18 months",
-      uptime: "99.9%",
       img: "https://images.unsplash.com/photo-1579621970795-87facc2f976d",
     },
     {
       title: "Hospital Management System",
       sector: "HEALTHCARE",
       description: "Deployed comprehensive HIS across 50 hospitals, improving patient care efficiency by 60%.",
-      delivery: "12 months",
-      efficiencyGain: "60%",
       img: "https://rmsresults.com/wp-content/uploads/2017/07/blog-hospital-case-study-3.jpg",
     },
   ] as CaseStudy[],
@@ -441,7 +425,6 @@ function About({
   img,
   title,
   intro,
-  stats,
   mission,
   certifications,
   indiaAdvantage,
@@ -449,7 +432,6 @@ function About({
   img: string;
   title: string;
   intro: string;
-  stats: AboutStat[];
   mission: string;
   certifications: Certification[];
   indiaAdvantage: IndiaAdvantage[];
@@ -480,21 +462,9 @@ function About({
         {/* Stats Grid */}
         <div className="p-8">
           <div className="grid sm:grid-cols-3 gap-6 text-center">
-            {stats.map((s, index) => (
-              <div
-                key={`${s.label}-${index}`}
-                className="p-6 bg-indigo-50 rounded-lg shadow-sm"
-              >
-                <div className="text-3xl font-bold text-indigo-700">
-                  {s.value}
-                </div>
-                <div className="mt-2 text-slate-700">{s.label}</div>
-              </div>
-            ))}
-
             {/* Mission */}
             <div className="flex flex-col sm:col-span-3">
-              <div className="mt-10">
+              <div>
                 <h4 className="text-xl font-semibold mb-3">Our Mission</h4>
                 <p className="text-slate-600 leading-relaxed">{mission}</p>
               </div>
@@ -527,7 +497,7 @@ function About({
                       className="flex items-start gap-3 p-4 border rounded-md bg-white shadow-sm"
                     >
                       <div className="mt-1">{ICONS[item.icon]}</div>
-                      <div>
+                      <div className="w-full">
                         <h5 className="font-semibold text-indigo-700">
                           {item.title}
                         </h5>
@@ -571,30 +541,6 @@ function CaseStudies({ cases }: { cases: CaseStudy[] }) {
                 <h4 className="font-semibold">{c.title}</h4>
                 <div className="mt-1 text-xs text-indigo-600 uppercase">{c.sector}</div>
                 <p className="mt-2 text-sm text-slate-600">{c.description}</p>
-                <div className="mt-4 grid grid-cols-3 text-sm text-slate-600 gap-2">
-                  <div>
-                    <div className="text-xs">Delivery</div>
-                    <div className="font-medium">{c.delivery}</div>
-                  </div>
-                  {'costReduction' in c && (
-                    <div>
-                      <div className="text-xs">Cost Reduction</div>
-                      <div className="font-medium">{c.costReduction}</div>
-                    </div>
-                  )}
-                  {'uptime' in c && (
-                    <div>
-                      <div className="text-xs">Uptime</div>
-                      <div className="font-medium">{c.uptime}</div>
-                    </div>
-                  )}
-                  {'efficiencyGain' in c && (
-                    <div>
-                      <div className="text-xs">Efficiency Gain</div>
-                      <div className="font-medium">{c.efficiencyGain}</div>
-                    </div>
-                  )}
-                </div>
                 <div className="mt-4">
                   <a href="#contact" className="inline-block rounded-md bg-indigo-600 px-3 py-2 text-white text-sm font-medium">
                     Discuss this case
