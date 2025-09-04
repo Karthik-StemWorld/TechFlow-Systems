@@ -2,30 +2,17 @@ import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import { motion } from "framer-motion";
 import {
-  FiCloud, FiBarChart2, FiShield, FiTrendingDown, FiStar, FiCheck, FiClock, FiAward, FiGlobe, FiCpu, FiMessageSquare, FiPhone, FiMail, FiMapPin, FiFacebook, FiLinkedin, FiTwitter,
+  FiCloud, FiBarChart2, FiTrendingDown, FiStar, FiCheck, FiClock, FiAward, FiGlobe, FiCpu, FiMessageSquare, FiPhone, FiMail, FiMapPin, FiFacebook, FiLinkedin, FiTwitter,
 } from 'react-icons/fi';
 import heroImage from './assets/computer.jpg'
 import './App.css';
 
 // --- Centralized Data Config ---
-// Use React.ReactElement for JSX types
-const ICONS: Record<string, React.ReactElement> = {
-  FiShield: <FiShield className="text-indigo-600 w-5 h-5" />,
-  FiCloud: <FiCloud className="text-indigo-600 w-5 h-5" />,
-  FiAward: <FiAward className="text-indigo-600 w-5 h-5" />,
-  FiGlobe: <FiGlobe className="text-indigo-600 w-5 h-5" />,
-  FiTrendingDown: <FiTrendingDown className="text-indigo-600 w-5 h-5" />,
-  FiCpu: <FiCpu className="text-indigo-600 w-5 h-5" />,
-  FiMessageSquare: <FiMessageSquare className="text-indigo-600 w-5 h-5" />,
-  FiClock: <FiClock className="text-indigo-600 w-5 h-5" />,
-};
 
 type Section = { id: string; label: string };
 type HeroStat = { title: string; subtitle: string };
 type Service = { title: string; description: string; features: string[]; img: string; icon: React.ReactElement };
 type WhyPoint = { title: string; desc: string; icon: () => React.ReactElement };
-type Certification = { name: string; icon: keyof typeof ICONS };
-type IndiaAdvantage = { title: string; desc: string; icon: keyof typeof ICONS };
 
 const DATA = {
   sections: [
@@ -33,8 +20,6 @@ const DATA = {
     { id: "services", label: "Services" },
     { id: "why", label: "Why Choose Us" },
     { id: "about", label: "About" },
-    { id: "cases", label: "Case Studies" },
-    { id: "testimonials", label: "Testimonials" },
     { id: "contact", label: "Contact" },
   ] as Section[],
   hero: {
@@ -87,6 +72,7 @@ const DATA = {
     { title: "Top-Tier Technical Talent", desc: "Our team consists of certified professionals from top Indian technical institutes.", icon: () => <FiStar width={20} height={20} stroke="#4f46e5" /> },
     { title: "Time Zone Advantage", desc: "Round-the-clock development and support with our strategic global time zone coverage.", icon: () => <FiClock width={20} height={20} stroke="#4f46e5" /> },
     { title: "Proven Track Record", desc: "Helped clients across manufacturing, retail, finance etc.", icon: () => <FiAward width={20} height={20} stroke="#4f46e5" /> },
+    { title: "English Proficiency", desc: "Seamless communication with global clients", icon: () => <FiMessageSquare width={20} height={20} stroke="#4f46e5" /> },
   ] as WhyPoint[],
   about: {
     img: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=1600&q=80",
@@ -103,18 +89,6 @@ const DATA = {
     ] as string[],
     conclusion:
       "As part of Wetechies LLC, TechFlow Systems continues its mission of empowering businesses with the right people, the right technology, and the right solutions—at the right time.",
-    certifications: [
-      { name: "ISO 27001 Certified", icon: "FiShield" },
-      { name: "AWS Partner", icon: "FiCloud" },
-      { name: "Microsoft Gold Partner", icon: "FiAward" },
-      { name: "Google Cloud Partner", icon: "FiGlobe" },
-    ] as Certification[],
-    indiaAdvantage: [
-      { title: "Cost Efficiency", desc: "Deliver premium quality at significantly lower costs than global competitors", icon: "FiTrendingDown" },
-      { title: "Technical Excellence", desc: "Access to the world's largest pool of IT professionals", icon: "FiCpu" },
-      { title: "English Proficiency", desc: "Seamless communication with global clients", icon: "FiMessageSquare" },
-      { title: "Time Zone Coverage", desc: "24/7 support and development capabilities", icon: "FiClock" },
-    ] as IndiaAdvantage[],
   },
 };
 
@@ -380,8 +354,6 @@ function About({
   mission,
   highlights,
   conclusion,
-  certifications,
-  indiaAdvantage,
 }: {
   img: string;
   title: string;
@@ -389,8 +361,6 @@ function About({
   mission: string;
   highlights: string[];
   conclusion: string;
-  certifications: Certification[];
-  indiaAdvantage: IndiaAdvantage[];
 }) {
   return (
     <div className="rounded-lg bg-white shadow-sm border overflow-hidden">
@@ -443,45 +413,6 @@ function About({
                 {conclusion}
               </p>
             </section>
-
-            {/* Certifications */}
-            <section>
-              <h4 className="text-2xl font-semibold mb-4">
-                Certifications & Standards
-              </h4>
-              <ul className="grid sm:grid-cols-2 gap-4">
-                {certifications.map((cert, index) => (
-                  <li
-                    key={`${cert.name}-${index}`}
-                    className="flex items-center gap-3 p-3 border rounded-md bg-slate-50 shadow-sm"
-                  >
-                    {ICONS[cert.icon]}
-                    <span className="text-slate-700">{cert.name}</span>
-                  </li>
-                ))}
-              </ul>
-            </section>
-
-            {/* India Advantage */}
-            <section>
-              <h4 className="text-2xl font-semibold mb-4">India Advantage</h4>
-              <div className="grid sm:grid-cols-2 gap-4">
-                {indiaAdvantage.map((item, index) => (
-                  <div
-                    key={`${item.title}-${index}`}
-                    className="flex items-start gap-3 p-4 border rounded-md bg-white shadow-sm"
-                  >
-                    <div className="mt-1">{ICONS[item.icon]}</div>
-                    <div>
-                      <h5 className="font-semibold text-indigo-700">
-                        {item.title}
-                      </h5>
-                      <p className="text-slate-600 mt-1 text-sm">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
           </div>
         </div>
       </motion.div>
@@ -526,12 +457,29 @@ function Contact() {
           {/* Left Info Panel */}
           <div className="bg-indigo-50 p-4 sm:p-10 flex flex-col justify-center">
             <h3 className="text-2xl font-semibold text-indigo-700 mb-4">
-              Contact Information
+              US Contact Information
             </h3>
             <div className="space-y-4 text-slate-700">
               <div className="flex items-center gap-3">
                 <FiMapPin className="text-indigo-600 w-5 h-5" />
-                <span>Bangalore, Karnataka, India</span>
+                <span>San Francisco Bay Area, California, USA</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <FiPhone className="text-indigo-600 w-5 h-5" />
+                <span>+1 202 555 0199.</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <FiMail className="text-indigo-600 w-5 h-5" />
+                <span>contact@techflowsystems.com</span>
+              </div>
+            </div>
+            <h3 className="text-2xl font-semibold text-indigo-700 mb-4 mt-10">
+              Indian Contact Information
+            </h3>
+            <div className="space-y-4 text-slate-700">
+              <div className="flex items-center gap-3">
+                <FiMapPin className="text-indigo-600 w-5 h-5" />
+                <span>Hyderabad, Telangana, India</span>
               </div>
               <div className="flex items-center gap-3">
                 <FiPhone className="text-indigo-600 w-5 h-5" />
@@ -596,7 +544,8 @@ function Contact() {
                 <option value="">Select a service</option>
                 <option>Cloud Migration</option>
                 <option>ERP Implementation</option>
-                <option>Healthcare Solutions</option>
+                <option>App Development</option>
+                <option>AI Implementation</option>
                 <option>Custom Development</option>
               </select>
               <textarea
