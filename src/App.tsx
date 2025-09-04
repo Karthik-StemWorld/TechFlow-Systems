@@ -26,19 +26,6 @@ type Service = { title: string; description: string; features: string[]; img: st
 type WhyPoint = { title: string; desc: string; icon: () => React.ReactElement };
 type Certification = { name: string; icon: keyof typeof ICONS };
 type IndiaAdvantage = { title: string; desc: string; icon: keyof typeof ICONS };
-type CaseStudy = {
-  title: string;
-  sector: string;
-  description: string;
-  img: string;
-};
-type Testimonial = {
-  name: string;
-  title: string;
-  quote: string;
-  rating: number;
-  avatar: string;
-};
 
 const DATA = {
   sections: [
@@ -104,8 +91,18 @@ const DATA = {
   about: {
     img: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=1600&q=80",
     title: "About TechFlow Systems",
-    intro: "TechFlow is a Wetechies LLC company which has been helping US base companies since 2013.",
-    mission: "To bridge the gap between high-quality technology solutions and cost-effectiveness by leveraging India's exceptional technical talent pool and innovative approach to system integration.",
+    intro:
+      "TechFlow Systems, a Wetechies LLC company, has been a trusted technology and staffing partner for organizations since 2013. Over the years, we have built a strong reputation for delivering reliable technology consulting, staffing support, and project execution across diverse domains.",
+    mission:
+      "Our expertise spans Cloud Solutions, Enterprise Applications, Application Development and Artificial Intelligence (AI), enabling businesses to scale efficiently and stay ahead in a competitive digital landscape. TechFlow Systems has a deep understanding of both technology and talent, bridging the gap between skilled professionals and enterprises looking to accelerate innovation.",
+    highlights: [
+      "Over a decade of experience supporting Global Clients across US, Europe, Middle East, APAC, and Australia.",
+      "Delivering end-to-end solutions from consulting and staffing to implementation and support.",
+      "A proven track record of providing highly skilled technology resources.",
+      "Building long-term partnerships based on trust, transparency, and results.",
+    ] as string[],
+    conclusion:
+      "As part of Wetechies LLC, TechFlow Systems continues its mission of empowering businesses with the right people, the right technology, and the right solutions—at the right time.",
     certifications: [
       { name: "ISO 27001 Certified", icon: "FiShield" },
       { name: "AWS Partner", icon: "FiCloud" },
@@ -113,55 +110,12 @@ const DATA = {
       { name: "Google Cloud Partner", icon: "FiGlobe" },
     ] as Certification[],
     indiaAdvantage: [
-      { title: "Cost Efficiency", desc: "Deliver premium quality at significantly costs than global competitors", icon: "FiTrendingDown" },
+      { title: "Cost Efficiency", desc: "Deliver premium quality at significantly lower costs than global competitors", icon: "FiTrendingDown" },
       { title: "Technical Excellence", desc: "Access to the world's largest pool of IT professionals", icon: "FiCpu" },
       { title: "English Proficiency", desc: "Seamless communication with global clients", icon: "FiMessageSquare" },
       { title: "Time Zone Coverage", desc: "24/7 support and development capabilities", icon: "FiClock" },
     ] as IndiaAdvantage[],
   },
-  cases: [
-    {
-      title: "Retail Chain Cloud Migration",
-      sector: "E-COMMERCE",
-      description: "Migrated 500+ stores to AWS, reducing infrastructure costs by 45% while improving performance.",
-      img: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=400",
-    },
-    {
-      title: "Banking ERP Implementation",
-      sector: "FINANCIAL SERVICES",
-      description: "Implemented core banking system for regional bank, processing 100K+ daily transactions.",
-      img: "https://images.unsplash.com/photo-1579621970795-87facc2f976d",
-    },
-    {
-      title: "Hospital Management System",
-      sector: "HEALTHCARE",
-      description: "Deployed comprehensive HIS across 50 hospitals, improving patient care efficiency by 60%.",
-      img: "https://rmsresults.com/wp-content/uploads/2017/07/blog-hospital-case-study-3.jpg",
-    },
-  ] as CaseStudy[],
-  testimonials: [
-    {
-      name: "Michael Chen",
-      title: "CTO, RetailTech Solutions",
-      quote: "TechFlow delivered our cloud migration project 2 weeks ahead of schedule and 30% under budget. Their team's expertise in AWS is outstanding.",
-      rating: 5,
-      avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-    },
-    {
-      name: "Sarah Johnson",
-      title: "CFO, FinanceFirst Corp",
-      quote: "The cost savings have been incredible - 50% reduction in our IT operational costs while improving system performance. Highly recommended!",
-      rating: 5,
-      avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-    },
-    {
-      name: "David Rodriguez",
-      title: "VP Engineering, HealthTech Innovations",
-      quote: "Exceptional communication and technical skills. The team understood our requirements perfectly and delivered exactly what we needed.",
-      rating: 5,
-      avatar: "https://randomuser.me/api/portraits/men/65.jpg",
-    },
-  ] as Testimonial[],
 };
 
 // --- Main App ---
@@ -190,8 +144,6 @@ export default function App() {
         <section id="services" className="py-20 px-6"><div className="container mx-auto"><Services services={DATA.services} /></div></section>
         <section id="why" className="py-20 bg-slate-50 px-6"><div className="container mx-auto"><WhyChoose points={DATA.why} /></div></section>
         <section id="about" className="py-20 px-6"><div className="container mx-auto !max-w-[1100px]"><About {...DATA.about} /></div></section>
-        <section id="cases" className="py-20 px-6 bg-white"><div className="container mx-auto"><CaseStudies cases={DATA.cases} /></div></section>
-        <section id="testimonials" className="py-20 px-6 bg-slate-50"><div className="container mx-auto max-w-5xl"><Testimonials items={DATA.testimonials} /></div></section>
         <section id="contact" className="py-20 px-6"><div className="container mx-auto max-w-3xl"><Contact /></div></section>
       </main>
       <Footer />
@@ -426,6 +378,8 @@ function About({
   title,
   intro,
   mission,
+  highlights,
+  conclusion,
   certifications,
   indiaAdvantage,
 }: {
@@ -433,6 +387,8 @@ function About({
   title: string;
   intro: string;
   mission: string;
+  highlights: string[];
+  conclusion: string;
   certifications: Certification[];
   indiaAdvantage: IndiaAdvantage[];
 }) {
@@ -445,7 +401,7 @@ function About({
         transition={{ duration: 0.6 }}
         className="container mx-auto"
       >
-        {/* Background Header Section */}
+        {/* Hero Section */}
         <div className="relative h-[22rem] flex items-center justify-center text-center text-white">
           <img
             src={img}
@@ -455,154 +411,78 @@ function About({
           <div className="absolute inset-0 bg-black/50"></div>
           <div className="z-10 px-6">
             <h3 className="text-4xl font-bold">{title}</h3>
-            <p className="mt-3 text-lg max-w-2xl mx-auto">{intro}</p>
+            <p className="mt-3 text-lg max-w-3xl mx-auto">{intro}</p>
           </div>
         </div>
 
-        {/* Stats Grid */}
+        {/* Content Section */}
         <div className="p-8">
-          <div className="grid sm:grid-cols-3 gap-6 text-center">
+          <div className="flex flex-col gap-10">
             {/* Mission */}
-            <div className="flex flex-col sm:col-span-3">
-              <div>
-                <h4 className="text-xl font-semibold mb-3">Our Mission</h4>
-                <p className="text-slate-600 leading-relaxed">{mission}</p>
-              </div>
+            <section>
+              <h4 className="text-2xl font-semibold mb-4">What We Do</h4>
+              <p className="text-slate-600 leading-relaxed text-lg">{mission}</p>
+            </section>
 
-              {/* Certifications */}
-              <div className="mt-10">
-                <h4 className="text-xl font-semibold mb-3">
-                  Certifications & Standards
-                </h4>
-                <ul className="grid sm:grid-cols-2 gap-4 text-slate-700">
-                  {certifications.map((cert, index) => (
-                    <li
-                      key={`${cert.name}-${index}`}
-                      className="flex items-center gap-3 p-3 border rounded-md bg-slate-50 shadow-sm"
-                    >
-                      {ICONS[cert.icon]}
-                      <span>{cert.name}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+            {/* Highlights */}
+            <section>
+              <h4 className="text-2xl font-semibold mb-4">Why Choose Us</h4>
+              <ul className="space-y-3">
+                {highlights.map((point, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <span className="text-indigo-600 mt-1">•</span>
+                    <span className="text-slate-700">{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
 
-              {/* India Advantage */}
-              <div className="mt-10">
-                <h4 className="text-xl font-semibold mb-3">India Advantage</h4>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  {indiaAdvantage.map((item, index) => (
-                    <div
-                      key={`${item.title}-${index}`}
-                      className="flex items-start gap-3 p-4 border rounded-md bg-white shadow-sm"
-                    >
-                      <div className="mt-1">{ICONS[item.icon]}</div>
-                      <div className="w-full">
-                        <h5 className="font-semibold text-indigo-700">
-                          {item.title}
-                        </h5>
-                        <p className="text-slate-600 mt-1 text-sm">{item.desc}</p>
-                      </div>
+            {/* Conclusion */}
+            <section>
+              <p className="text-slate-700 leading-relaxed text-lg italic">
+                {conclusion}
+              </p>
+            </section>
+
+            {/* Certifications */}
+            <section>
+              <h4 className="text-2xl font-semibold mb-4">
+                Certifications & Standards
+              </h4>
+              <ul className="grid sm:grid-cols-2 gap-4">
+                {certifications.map((cert, index) => (
+                  <li
+                    key={`${cert.name}-${index}`}
+                    className="flex items-center gap-3 p-3 border rounded-md bg-slate-50 shadow-sm"
+                  >
+                    {ICONS[cert.icon]}
+                    <span className="text-slate-700">{cert.name}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+
+            {/* India Advantage */}
+            <section>
+              <h4 className="text-2xl font-semibold mb-4">India Advantage</h4>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {indiaAdvantage.map((item, index) => (
+                  <div
+                    key={`${item.title}-${index}`}
+                    className="flex items-start gap-3 p-4 border rounded-md bg-white shadow-sm"
+                  >
+                    <div className="mt-1">{ICONS[item.icon]}</div>
+                    <div>
+                      <h5 className="font-semibold text-indigo-700">
+                        {item.title}
+                      </h5>
+                      <p className="text-slate-600 mt-1 text-sm">{item.desc}</p>
                     </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </motion.div>
-    </div>
-  );
-}
-
-
-// --- Case Studies ---
-function CaseStudies({ cases }: { cases: CaseStudy[] }) {
-  return (
-    <div>
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="container mx-auto"
-      >
-        <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold">Portfolio & Case Studies</h2>
-          <p className="mt-2 text-slate-600">
-            Real results for real businesses. See how we've helped companies transform their technology infrastructure.
-          </p>
-        </div>
-        <div className="flex flex-wrap justify-center gap-6">
-          {cases.map((c, idx) => (
-            <div key={`${c.title}-${idx}`} className="w-full md:w-[calc(33%-1rem)] max-w-sm rounded-lg overflow-hidden border bg-white shadow-sm transition transform hover:scale-105 hover:shadow-lg">
-              <img src={c.img} alt={c.title} className="w-full h-44 object-cover" />
-              <div className="p-4">
-                <h4 className="font-semibold">{c.title}</h4>
-                <div className="mt-1 text-xs text-indigo-600 uppercase">{c.sector}</div>
-                <p className="mt-2 text-sm text-slate-600">{c.description}</p>
-                <div className="mt-4">
-                  <a href="#contact" className="inline-block rounded-md bg-indigo-600 px-3 py-2 text-white text-sm font-medium">
-                    Discuss this case
-                  </a>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </motion.div>
-    </div>
-  );
-}
-
-// --- Testimonials ---
-function Testimonials({ items }: { items: Testimonial[] }) {
-  return (
-    <div>
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="container mx-auto"
-      >
-        <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold">Client Testimonials</h2>
-          <p className="mt-2 text-slate-600">
-            Don't just take our word for it. Here's what our clients say about working with us.
-          </p>
-        </div>
-
-        <div className="flex flex-wrap justify-center gap-6">
-          {items.map((t, idx) => (
-            <div
-              key={`${t.name}-${idx}`}
-              className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33%-1rem)] max-w-sm rounded-lg p-6 border bg-white shadow-sm hover:shadow-md transition"
-            >
-              {/* Avatar & Info */}
-              <div className="flex items-center gap-4">
-                <img
-                  src={t.avatar}
-                  alt={t.name}
-                  className="w-12 h-12 rounded-full object-cover border"
-                />
-                <div>
-                  <div className="font-semibold">{t.name}</div>
-                  <div className="text-sm text-slate-500">{t.title}</div>
-                </div>
-              </div>
-
-              {/* Quote */}
-              <p className="mt-4 text-slate-700 italic">“{t.quote}”</p>
-
-              {/* Rating */}
-              <div className="mt-4 flex gap-1 text-yellow-500">
-                {Array.from({ length: t.rating }).map((_, i) => (
-                  <FiStar key={i} className="w-5 h-5 fill-yellow-500" />
+                  </div>
                 ))}
               </div>
-            </div>
-          ))}
+            </section>
+          </div>
         </div>
       </motion.div>
     </div>
